@@ -1,7 +1,8 @@
-const cors = require('cors')
-const express = require('express');
+import cors from 'cors'
+import express from 'express'
+import axios from 'axios'
+
 const app = express();
-const axios = require('axios');
 
 app.use(cors())
 
