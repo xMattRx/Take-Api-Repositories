@@ -34,8 +34,8 @@ let Order = CSharp.sort((a,b)=> new Date(a.created_at).valueOf() - new Date(b.cr
 
 //Cinco repositorios mais velhos
 let FiveOlders = Order.slice(0,5)
-
-res.json(FiveOlders)
+let FiveOldersObject = {...FiveOlders}
+res.json(FiveOldersObject)
 
 
 })
