@@ -6,8 +6,8 @@ const app = express();
 
 app.use(cors())
 
-app.listen(3000,()=>{
-  console.log(3000)
+app.listen(process.env.PORT || 5000,()=>{
+  console.log(5000)
 })
 
 app.get("/", async(req,res)=>{
