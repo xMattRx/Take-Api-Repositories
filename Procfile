@@ -1,1 +1,1 @@
-web: node src/server.js
+web: node --es-module-specifier-resolution=node src/server.js
