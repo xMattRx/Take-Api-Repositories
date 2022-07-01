@@ -20,7 +20,7 @@ app.get("/", async(req,res)=>{
     const {data} = await axios(`https://api.github.com/users/takenet/repos?page=${index}`)
     allRepositories.push(...data)
   } catch(error){ 
-    console.log(error)
+    res.status(400).send(error)
   }
 }
 
