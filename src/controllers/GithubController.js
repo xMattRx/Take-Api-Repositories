@@ -3,27 +3,25 @@ import axios from 'axios';
 class GithubController{
   async getRepositories(req,res){
     let utils = new Utils();
-    let repositories = await utils.requestAllRepositories()
-    repositories = utils.filterByCSharp(repositories)
-    repositories = utils.sortByData(repositories)
-    repositories = utils.fiveOlders(repositories)
-    return res.status(200).json(repositories)
+    
+    let arrayRepositories = [];
+    for (let index = 1; index <= 4; index++) {
+    try{  
+      const {data} = await axios(`https://api.github.com/users/takenet/repos?page=${index}`)
+      arrayRepositories.push(...data)
+    } catch(error){ 
+      res.status(400).send(error)
+    }
+  }
+    arrayRepositories = utils.filterByCSharp(arrayRepositories)
+    arrayRepositories = utils.sortByData(arrayRepositories)
+    arrayRepositories = utils.fiveOlders(arrayRepositories)
+    res.status(200).json(arrayRepositories)
+    return res.status(200).send()
   }
 }
 
 export class Utils{
-  async requestAllRepositories(){
-    let arrayRepositories = [];
-      for (let index = 1; index <= 4; index++) {
-      try{  
-        const {data} = await axios(`https://api.github.com/users/takenet/repos?page=${index}`)
-        arrayRepositories.push(...data)
-      } catch(error){ 
-        res.status(400).send(error)
-      }
-    }
-    return arrayRepositories
-  }
   filterByCSharp(repositories){
     const language = "C#"
 
