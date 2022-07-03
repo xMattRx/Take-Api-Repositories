@@ -1,32 +1,45 @@
-import axios from 'axios'
+import axios from 'axios';
 
 class GithubController{
   async getRepositories(req,res){
-      // Todos os repositorios
-    let allRepositories = []
-    
-    // Requisição de todos os repositórios
-    for (let index = 1; index <= 4; index++) {
-    try{  
-      const {data} = await axios(`https://api.github.com/users/takenet/repos?page=${index}`)
-      allRepositories.push(...data)
-    } catch(error){ 
-      res.status(400).send(error)
-    }
+    let utils = new Utils();
+    let repositories = await utils.requestAllRepositories()
+    repositories = utils.filterByCSharp(repositories)
+    repositories = utils.sortByData(repositories)
+    repositories = utils.fiveOlders(repositories)
+    return res.status(200).json(repositories)
   }
+}
 
-  //Filtro C#
-  let CSharp = allRepositories.filter((repo)=>{
-    return repo.language === 'C#'
-  })
+export class Utils{
+  async requestAllRepositories(){
+    let arrayRepositories = [];
+      for (let index = 1; index <= 4; index++) {
+      try{  
+        const {data} = await axios(`https://api.github.com/users/takenet/repos?page=${index}`)
+        arrayRepositories.push(...data)
+      } catch(error){ 
+        res.status(400).send(error)
+      }
+    }
+    return arrayRepositories
+  }
+  filterByCSharp(repositories){
+    const language = "C#"
 
-  //Ordenação em data crescente
-  let Order = CSharp.sort((a,b)=> new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf())
-
-  //Cinco repositorios mais velhos
-  let FiveOlders = Order.slice(0,5)
-  return res.json(FiveOlders)
-
+    //Filtro C#
+    let CSharp = repositories.filter((repo)=>{
+      return repo.language === language
+    })
+    return CSharp
+  }
+  sortByData(repositories){
+    let Order = repositories.sort((a,b)=> new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf())
+    return Order
+  }
+  fiveOlders(repositories){
+    let FiveOlders = repositories.slice(0,5)
+    return FiveOlders
   }
 }
 
