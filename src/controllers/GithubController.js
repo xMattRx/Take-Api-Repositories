@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Utils from '../utils'
+import Utils from '../utils';
 
 class GithubController{
   async getRepositories(req,res){
@@ -16,8 +16,7 @@ class GithubController{
     arrayRepositories = utils.filterByCSharp(arrayRepositories)
     arrayRepositories = utils.sortByData(arrayRepositories)
     arrayRepositories = utils.fiveOlders(arrayRepositories)
-    res.status(200).json(arrayRepositories)
-    return res.status(200).send()
+    return res.status(200).json(arrayRepositories)
   }
 }
 
